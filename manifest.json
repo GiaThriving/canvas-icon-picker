@@ -1,0 +1,9 @@
+{
+  "id": "canvas-icon-picker",
+  "name": "Canvas Icon Picker",
+  "version": "1.2.5",
+  "minAppVersion": "1.4.0",
+  "description": "画布右上角插入图标：418+ Material 与 Lucide 图标、多形态切换、分类选项卡、中文模糊搜索、拖拽入画布（透明无框）、色卡组、收藏与自定义 SVG；左右边缘均可拉伸并切换列数、可拖动位置，分类栏完整显示；左键单击画布图标即可直接修改该节点的颜色/形态/边框；删除画布图标时自动清理无引用的 SVG 文件。",
+  "author": "BACK",
+  "isDesktopOnly": true
+}

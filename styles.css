@@ -1,0 +1,861 @@
+/* Canvas Icon Picker — 原生风格样式表 */
+
+/* ---------------- 画布右上角按钮 ---------------- */
+
+.ci-canvas-action.is-active {
+  color: var(--color-accent);
+}
+
+.ci-canvas-action:not(.canvas-control-item) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-s, 4px);
+  background: transparent;
+  color: var(--text-normal);
+  cursor: pointer;
+}
+
+.ci-canvas-action:not(.canvas-control-item):hover {
+  background: var(--background-modifier-hover);
+}
+
+/* ---------------- 画布里的图标节点：去掉默认边框 / 背景 ---------------- */
+
+.canvas-node.ci-icon-node .canvas-node-container {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.canvas-node.ci-icon-node .canvas-node-content {
+  background: transparent !important;
+}
+
+.canvas-node.ci-icon-node .canvas-node-label {
+  display: none !important;
+}
+
+.canvas-node.ci-icon-node .canvas-node-content img {
+  background: transparent !important;
+  object-fit: contain;
+}
+
+.canvas-node.ci-icon-node.is-selected .canvas-node-container,
+.canvas-node.ci-icon-node.is-focused .canvas-node-container {
+  border-color: var(--color-accent) !important;
+  box-shadow: var(--shadow-border-accent) !important;
+}
+
+/* ---------------- 面板 ---------------- */
+
+.ci-panel {
+  position: fixed;
+  z-index: var(--layer-popover, 30);
+  width: 336px;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 8px);
+  box-shadow: var(--shadow-s, 0 4px 16px rgba(0, 0, 0, 0.18));
+  overflow: hidden;
+  font-size: var(--font-ui-small, 13px);
+  animation: ci-pop-in 120ms ease-out;
+}
+
+.ci-panel.is-sized .ci-grid {
+  max-height: none;
+}
+
+@keyframes ci-pop-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 缩放手柄 */
+.ci-resize {
+  position: absolute;
+  z-index: 3;
+  background: transparent;
+  transition: background 90ms ease;
+}
+
+.ci-resize-l { top: 0; bottom: 0; left: 0; width: 6px; cursor: ew-resize; }
+.ci-resize-r { top: 0; bottom: 0; right: 0; width: 6px; cursor: ew-resize; }
+.ci-resize-b { left: 0; right: 0; bottom: 0; height: 6px; cursor: ns-resize; }
+.ci-resize-br { right: 0; bottom: 0; width: 14px; height: 14px; cursor: nwse-resize; }
+
+.ci-resize-l:hover,
+.ci-resize-r:hover,
+.ci-resize-b:hover,
+.ci-resize-br:hover {
+  background: color-mix(in srgb, var(--interactive-accent) 45%, transparent);
+}
+
+.ci-panel.is-resizing {
+  user-select: none;
+  cursor: default;
+}
+
+/* 头部 */
+.ci-head {
+  flex: 0 0 auto; /* 不被网格挤扁 */
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 8px 6px 8px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.ci-search-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  height: 28px;
+  background: var(--background-modifier-form-field);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+}
+
+.ci-search-wrap:focus-within {
+  border-color: var(--interactive-accent);
+}
+
+.ci-search-icon {
+  display: flex;
+  color: var(--text-muted);
+  flex: 0 0 auto;
+}
+
+.ci-search-icon .svg-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.ci-search {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  font-size: var(--font-ui-smaller, 12px);
+  color: var(--text-normal);
+}
+
+.ci-search:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+
+.ci-iconbtn {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-s, 4px);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.ci-iconbtn:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.ci-iconbtn.is-active {
+  color: var(--interactive-accent);
+  background: var(--background-modifier-hover);
+}
+
+.ci-iconbtn .svg-icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* 选项卡（横向滚动） */
+.ci-tabs {
+  flex: 0 0 auto; /* 关键：面板高度不够时不能把整排分类压成 0 高 */
+  min-height: 30px;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2px;
+  padding: 6px 8px 6px 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.ci-tabs::-webkit-scrollbar {
+  height: 5px;
+}
+
+.ci-tabs::-webkit-scrollbar-thumb {
+  background: var(--background-modifier-border);
+  border-radius: 3px;
+}
+
+.ci-tab {
+  flex: 0 0 auto;
+  padding: 3px 10px;
+  border: none;
+  border-radius: var(--radius-s, 4px);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller, 12px);
+  cursor: pointer;
+  box-shadow: none;
+  white-space: nowrap;
+}
+
+.ci-tab:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.ci-tab.is-active {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+  font-weight: var(--font-medium, 500);
+}
+
+/* 图标网格 */
+.ci-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 40px);
+  grid-auto-rows: 40px;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 46vh;
+  scrollbar-gutter: stable;
+}
+
+.ci-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ci-grid::-webkit-scrollbar-thumb {
+  background: var(--background-modifier-border);
+  border-radius: 4px;
+}
+
+.ci-empty {
+  grid-column: 1 / -1;
+  padding: 28px 0;
+  text-align: center;
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller, 12px);
+}
+
+.ci-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-radius: var(--radius-s, 4px);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.ci-tile:hover {
+  background: var(--background-modifier-hover);
+}
+
+.ci-tile:active {
+  cursor: grabbing;
+}
+
+.ci-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  color: var(--ci-c, var(--text-normal));
+}
+
+.ci-icon svg {
+  width: 22px;
+  height: 22px;
+  color: var(--ci-c, var(--text-normal));
+}
+
+.ci-icon.ci-btn {
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--ci-c, var(--text-normal));
+  border-radius: 6px;
+  padding: 3px;
+  box-sizing: border-box;
+}
+
+.ci-icon.ci-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* 收藏星标 */
+.ci-star {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-faint);
+  opacity: 0;
+  cursor: pointer;
+  box-shadow: none;
+  transition: opacity 80ms ease;
+}
+
+.ci-star .svg-icon {
+  width: 11px;
+  height: 11px;
+}
+
+.ci-tile:hover .ci-star {
+  opacity: 1;
+}
+
+.ci-star.is-active {
+  opacity: 1;
+  color: var(--color-yellow, #d4a72c);
+}
+
+/* 底栏 */
+.ci-foot {
+  flex: 0 0 auto; /* 底栏按钮不被挤掉 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 10px;
+  border-top: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+}
+
+.ci-import {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  background: var(--interactive-normal);
+  color: var(--text-normal);
+  font-size: var(--font-ui-smaller, 12px);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.ci-import:hover {
+  background: var(--interactive-hover);
+}
+
+.ci-foot-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* 「移动」按钮：按住拖动整个面板 */
+.ci-move {
+  cursor: grab;
+  touch-action: none;
+}
+
+.ci-move:active,
+.ci-move.is-grabbing {
+  cursor: grabbing;
+  background: var(--interactive-hover);
+}
+
+.ci-move-icon {
+  display: flex;
+  align-items: center;
+  color: var(--text-muted);
+}
+
+.ci-move-icon .svg-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.ci-panel.is-moving {
+  user-select: none;
+  cursor: grabbing;
+}
+
+.ci-panel.is-moving .ci-move {
+  background: var(--interactive-hover);
+  color: var(--text-normal);
+}
+
+.ci-count {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller, 12px);
+  margin-inline-start: auto;
+}
+
+/* ---------------- 拖拽幽灵 ---------------- */
+
+.ci-ghost {
+  position: fixed;
+  z-index: calc(var(--layer-popover, 30) + 10);
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0.85;
+  border-radius: 8px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: var(--shadow-s, 0 4px 12px rgba(0, 0, 0, 0.2));
+}
+
+.ci-ghost .ci-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.ci-ghost .ci-icon svg {
+  width: 34px;
+  height: 34px;
+}
+
+/* ---------------- 右键样式面板 ---------------- */
+
+.ci-pop {
+  position: fixed;
+  z-index: calc(var(--layer-popover, 30) + 5);
+  width: 300px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 8px);
+  box-shadow: var(--shadow-s, 0 6px 20px rgba(0, 0, 0, 0.22));
+  font-size: var(--font-ui-smaller, 12px);
+  animation: ci-pop-in 100ms ease-out;
+}
+
+.ci-pop.ci-node-edit {
+  border-color: var(--interactive-accent);
+  box-shadow: var(--shadow-s, 0 6px 20px rgba(0, 0, 0, 0.22)), 0 0 0 1px var(--interactive-accent);
+}
+
+.ci-pop-title {
+  font-weight: var(--font-medium, 500);
+  color: var(--text-normal);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ci-pop-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ci-pop-label {
+  flex: 0 0 34px;
+  color: var(--text-muted);
+}
+
+.ci-dots {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+}
+
+.ci-dot {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--background-modifier-border);
+  cursor: pointer;
+  box-shadow: none;
+  flex: 0 0 auto;
+}
+
+.ci-dot:hover {
+  border-color: var(--text-muted);
+}
+
+.ci-dot.is-active {
+  border-color: var(--text-normal);
+  box-shadow: 0 0 0 2px var(--interactive-accent);
+}
+
+.ci-dot-theme {
+  border-color: var(--background-modifier-border);
+}
+
+.ci-dot-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1.5px dashed var(--background-modifier-border);
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1;
+}
+
+.ci-dot-add:hover {
+  border-color: var(--interactive-accent);
+  color: var(--interactive-accent);
+}
+
+.ci-color-input {
+  display: none;
+}
+
+.ci-color-drop {
+  margin-inline-start: auto;
+}
+
+/* 当前颜色 / 所属色卡 */
+.ci-color-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px 1px 8px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.ci-swatch {
+  flex: 0 0 auto;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--text-normal);
+}
+
+.ci-color-name {
+  color: var(--text-normal);
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ci-color-hex {
+  margin-inline-start: auto;
+  font-family: var(--font-monospace, monospace);
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.ci-color-drop .svg-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* 色卡面板 */
+.ci-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  background: var(--background-secondary);
+  max-height: 210px;
+  overflow-y: auto;
+}
+
+.ci-groups.is-hidden {
+  display: none;
+}
+
+.ci-group-new {
+  align-self: flex-start;
+  padding: 3px 9px;
+  border: 1px dashed var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  background: transparent;
+  color: var(--text-normal);
+  font-size: var(--font-ui-smaller, 12px);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.ci-group-new:hover {
+  border-color: var(--interactive-accent);
+  color: var(--interactive-accent);
+}
+
+.ci-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px 6px;
+  border-radius: var(--radius-s, 4px);
+  border: 1px solid transparent;
+  flex: 0 0 auto; /* 防止色卡多时被压扁、整行色点和按钮消失 */
+  min-height: 46px;
+}
+
+/* 当前调色板（颜色行顶部显示这组颜色） */
+.ci-group.is-active {
+  background: color-mix(in srgb, var(--interactive-accent) 14%, transparent);
+  border-color: color-mix(in srgb, var(--interactive-accent) 60%, transparent);
+}
+
+.ci-group.is-active .ci-group-name {
+  color: var(--text-normal);
+  font-weight: 600;
+}
+
+/* 当前图标颜色所属的色卡 */
+.ci-group.is-current {
+  border-color: var(--interactive-accent);
+}
+
+.ci-group-new,
+.ci-group-editor {
+  flex: 0 0 auto;
+}
+
+.ci-group-base {
+  cursor: pointer;
+}
+
+.ci-group-base .ci-dots-preview {
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.ci-dot-preview {
+  cursor: default;
+  pointer-events: none;
+}
+
+.ci-group-head {
+  cursor: pointer;
+}
+
+.ci-dots-empty {
+  font-size: 11px;
+  color: var(--text-faint);
+  padding: 2px 4px;
+}
+
+/* 色点右键菜单：删除该颜色 */
+.ci-swatch-menu {
+  position: fixed;
+  z-index: 10060;
+  min-width: 132px;
+  padding: 4px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 6px);
+  background: var(--background-primary);
+  box-shadow: var(--shadow-s, 0 4px 14px rgba(0, 0, 0, 0.35));
+}
+
+.ci-swatch-del {
+  display: block;
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  border-radius: var(--radius-s, 4px);
+  background: transparent;
+  box-shadow: none;
+  text-align: left;
+  font-size: var(--font-ui-smaller, 12px);
+  color: var(--text-normal);
+  cursor: pointer;
+}
+
+.ci-swatch-del:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-error, #e5534b);
+}
+
+.ci-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.ci-group-name {
+  color: var(--text-normal);
+  font-size: var(--font-ui-smaller, 12px);
+}
+
+.ci-group-del {
+  width: 20px;
+  height: 20px;
+  opacity: 0.55; /* 常显，悬停加深，避免整行按钮“消失” */
+}
+
+.ci-group:hover .ci-group-del {
+  opacity: 1;
+}
+
+.ci-group-del .svg-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.ci-group-editor {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ci-group-input {
+  flex: 1;
+  height: 24px;
+  font-size: var(--font-ui-smaller, 12px);
+}
+
+.ci-group-ok,
+.ci-group-cancel {
+  padding: 2px 8px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  background: var(--interactive-normal);
+  color: var(--text-normal);
+  font-size: var(--font-ui-smaller, 12px);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.ci-group-ok {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border-color: transparent;
+}
+
+/* 形态分段 */
+.ci-pop-var {
+  align-items: flex-start;
+}
+
+.ci-seg {
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s, 4px);
+  overflow: hidden;
+}
+
+.ci-seg-btn {
+  flex: 1 1 auto;
+  min-width: 44px;
+  padding: 3px 8px;
+  border: none;
+  border-radius: 0;
+  background: var(--background-secondary);
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller, 12px);
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.ci-seg-btn + .ci-seg-btn {
+  border-inline-start: 1px solid var(--background-modifier-border);
+}
+
+.ci-seg-btn.is-active {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.ci-seg-empty {
+  padding: 3px 8px;
+  color: var(--text-faint);
+}
+
+/* 开关 */
+.ci-pop-switch {
+  justify-content: flex-start;
+}
+
+.ci-switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 18px;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: var(--background-modifier-border);
+  cursor: pointer;
+  box-shadow: none;
+  transition: background 120ms ease;
+}
+
+.ci-switch.is-on {
+  background: var(--interactive-accent);
+}
+
+.ci-switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--background-primary);
+  transition: transform 120ms ease;
+}
+
+.ci-switch.is-on .ci-switch-knob {
+  transform: translateX(14px);
+}
+
+.ci-switch-text {
+  color: var(--text-muted);
+}
+
+.ci-pop-tip {
+  color: var(--text-faint);
+  font-size: var(--font-ui-smaller, 12px);
+  line-height: 1.5;
+}
